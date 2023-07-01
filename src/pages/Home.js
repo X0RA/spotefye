@@ -41,13 +41,18 @@ export default function Home() {
   }, []);
 
   const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+    position: "relative", // Add this line
+    // backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
     ...theme.typography.body2,
     padding: theme.spacing(2),
     textAlign: "center",
     color: theme.palette.text.secondary,
     height: "100%",
     overflow: "auto", // Enable scroll if the content overflows
+    // limit text
+    display: "-webkit-box",
+    "-webkit-line-clamp": 3,
+    "-webkit-box-orient": "vertical",
   }));
 
   return (
@@ -76,40 +81,52 @@ export default function Home() {
             <Grid item key={index} xs={12} sm={6} lg={3} sx={{ pt: 100 }}>
               <Item
                 sx={{
+                  // backgroundColor: "rgba(0,0,0, 0.2)",
+                  // background: "rgba(0,0,0, 0.2)",
+                  background: "linear-gradient(120deg, rgba(56, 0, 54, 0.3), rgba(12, 186, 186, 0.3))",
+                  backdropFilter: "blur(10px)",
+                  zIndex: 1,
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "space-between",
                   borderRadius: "8px",
                   boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
                   transition: "transform 0.2s ease-in-out",
-
                   "&:hover": {
                     transform: "scale(1.05)",
                   },
-                  // "&:before": {
-                  //   content: '""',
-                  //   position: "absolute",
-                  //   top: 0,
-                  //   right: 0,
-                  //   bottom: 0,
-                  //   left: 0,
-                  //
-                  //   backgroundSize: "cover",
-                  //   backgroundRepeat: "no-repeat",
-                  //   opacity: playlist.image ? 1 : 1,
-                  //   zIndex: -1,
-                  // },
                 }}>
                 <div
                   style={{
-                    backgroundColor: playlist.image ? "transparent" : "white",
-                    backgroundImage: `url(${playlist.image})`,
+                    zIndex: 2,
+                    // backgroundColor: playlist.image ? "rgba(255, 255, 255, 0.6)" : "rgba(255, 255, 255, 0.6)", // Apply background color with alpha channel
                     padding: "1em",
                     borderRadius: "8px",
+                    backgroundColor: "rgba(255, 255, 255, 0)",
+                    color: "white",
                   }}>
-                  <h3>{playlist.name}</h3>
+                  <h3 style={{ fontSize: "1.5em" }}>{playlist.name}</h3>
                   <p style={{ textAlign: "left" }}>{playlist.description}</p>
                 </div>
+
+                <Box
+                  sx={{
+                    position: "absolute", // Add this line
+                    height: "100%",
+                    width: "100%", // Add this line
+                    zIndex: -1,
+                    background: "rgba(0,0,0, 0.2)",
+                    backgroundImage: `url(${playlist.image})`,
+                    backgroundSize: "cover",
+                    opacity: 0.3,
+                    top: 0,
+                    right: 0,
+                    bottom: 0,
+                    left: 0,
+                    backgroundRepeat: "no-repeat",
+                  }}
+                />
+
                 <div style={{ marginTop: "auto" }}>
                   <Button
                     variant="contained"

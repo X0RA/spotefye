@@ -3,11 +3,11 @@ import { storeData } from "../management/browserStorage";
 
 const CLIENT_ID = "bfabf29efb754bd2a1a2ec899e2188fc";
 const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
-const REDIRECT_URI = "http://localhost:3000/callback/";
-// const REDIRECT_URI = "https://spotefye.web.app/callback/";
+// const REDIRECT_URI = "http://localhost:3000/callback/";
+const REDIRECT_URI = "https://spotefye.web.app/callback/";
 const RESPONSE_TYPE = "code";
 const SCOPE =
-  "streaming user-read-currently-playing user-read-playback-position user-library-modify user-top-read user-library-read user-read-email playlist-read-private user-read-private";
+  "ugc-image-upload playlist-modify-public playlist-modify-private streaming user-read-currently-playing user-read-playback-position user-library-modify user-top-read user-library-read user-read-email playlist-read-private user-read-private";
 // const SCOPE = "user-read-private user-read-email";
 
 export const generateRandomString = (length) => {

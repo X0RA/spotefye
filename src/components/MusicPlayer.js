@@ -121,7 +121,6 @@ export default function MusicPlayerSlider({ songTitle, artist, album, cover, ext
   }, [songTitle]);
 
   useEffect(() => {
-    console.log(artist);
     Array.from(document.querySelectorAll(".musicPlayerContent")).forEach((el) => new TiltObj(el));
   }, []);
   return (

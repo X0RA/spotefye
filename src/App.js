@@ -4,6 +4,7 @@ import PrivateRoute from "./management/PrivateRoute";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Playlist from "./pages/Playlist";
+import SavePage from "./pages/Save";
 import { AuthProvider } from "./management/spotify";
 
 function App() {
@@ -38,6 +39,15 @@ function App() {
           element={
             <PrivateRoute>
               <Playlist />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          exact
+          path="/save"
+          element={
+            <PrivateRoute>
+              <SavePage />
             </PrivateRoute>
           }
         />
