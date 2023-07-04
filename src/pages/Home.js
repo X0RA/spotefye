@@ -15,9 +15,18 @@ export default function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const playlistData = await getPlaylists();
-        const updatedPlaylists = [];
+        const playlistData = [
+          {
+            name: "Liked",
+            description: "Your favorite songs, all in one place.",
+            id: "liked",
+            image: "https://t.scdn.co/images/3099b3803ad9496896c43f22fe9be8c4.png",
+          },
+        ];
 
+        const playlists = await getPlaylists();
+        playlistData.push(...playlists);
+        const updatedPlaylists = [];
         for (const playlist of playlistData) {
           if (playlist.images && playlist.images.length > 0) {
             try {

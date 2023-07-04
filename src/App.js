@@ -6,52 +6,55 @@ import Home from "./pages/Home";
 import Playlist from "./pages/Playlist";
 import SavePage from "./pages/Save";
 import { AuthProvider } from "./management/spotify";
+import { FirebaseProvider, useAuth } from "./management/firebase";
 
 function App() {
   return (
     <AuthProvider>
-      <Routes>
-        <Route exact path="/login" element={<Login />} />
+      <FirebaseProvider>
+        <Routes>
+          <Route exact path="/login" element={<Login />} />
 
-        <Route
-          exact
-          path="/"
-          element={
-            <PrivateRoute>
-              <Home />
-            </PrivateRoute>
-          }
-        />
+          <Route
+            exact
+            path="/"
+            element={
+              <PrivateRoute>
+                <Home />
+              </PrivateRoute>
+            }
+          />
 
-        <Route
-          exact
-          path="/home"
-          element={
-            <PrivateRoute>
-              <Home />
-            </PrivateRoute>
-          }
-        />
+          <Route
+            exact
+            path="/home"
+            element={
+              <PrivateRoute>
+                <Home />
+              </PrivateRoute>
+            }
+          />
 
-        <Route
-          exact
-          path="/playlist/:id"
-          element={
-            <PrivateRoute>
-              <Playlist />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          exact
-          path="/save"
-          element={
-            <PrivateRoute>
-              <SavePage />
-            </PrivateRoute>
-          }
-        />
-      </Routes>
+          <Route
+            exact
+            path="/playlist/:id"
+            element={
+              <PrivateRoute>
+                <Playlist />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            exact
+            path="/save"
+            element={
+              <PrivateRoute>
+                <SavePage />
+              </PrivateRoute>
+            }
+          />
+        </Routes>
+      </FirebaseProvider>
     </AuthProvider>
   );
 }

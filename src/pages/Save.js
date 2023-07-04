@@ -12,6 +12,7 @@ import Typography from "@mui/material/Typography";
 import CardContent from "@mui/material/CardContent";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useNavigate } from "react-router-dom";
+import { set } from "animejs";
 
 const TinyColor = require("tinycolor2");
 
@@ -25,6 +26,7 @@ const SavePage = () => {
   const [wipePlaylist, setWipePlaylist] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [typingTimer, setTypingTimer] = useState(0);
+  const [savedPlaylist, setSavedPlaylist] = useState(null);
 
   useEffect(() => {
     const load = async () => {
@@ -191,7 +193,8 @@ const SavePage = () => {
 
   const savePlaylistWrapper = async (playlistName, sortedPlaylist, wipePlaylist, playlistImage) => {
     setIsSaving(true);
-    await SavePlaylist(playlistName, sortedPlaylist, wipePlaylist, playlistImage, playlistDescription);
+    const uri = await SavePlaylist(playlistName, sortedPlaylist, wipePlaylist, playlistImage, playlistDescription);
+    setSavedPlaylist(uri);
     setIsSaving(false);
   };
 
@@ -215,11 +218,11 @@ const SavePage = () => {
         {playlistImage && (
           <Card
             style={{
-              width: "auto", // Adjust the width as needed for mobile responsiveness
-              height: "80vw", // Adjust the height as needed for mobile responsiveness
-              maxHeight: "400px", // Maximum height for larger screens
+              width: "400px", // Adjust the width as needed for mobile responsiveness
+              height: "auto", // Adjust the height as needed for mobile responsiveness
+              // maxHeight: "400px", // Maximum height for larger screens
               borderRadius: 10,
-              overflow: "hidden",
+              overflow: "visible",
               boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.5)", // Adjust the shadow as needed
               cursor: "pointer",
               marginBottom: 20,
@@ -320,6 +323,15 @@ const SavePage = () => {
                   savePlaylistWrapper(playlistName, sortedPlaylist, wipePlaylist, playlistImage, playlistDescription);
                 }}>
                 Save
+              </Button>
+            )}
+            {savedPlaylist && (
+              <Button
+                variant="contained"
+                onClick={() => {
+                  window.open(savedPlaylist);
+                }}>
+                View Playlist
               </Button>
             )}
           </CardActions>

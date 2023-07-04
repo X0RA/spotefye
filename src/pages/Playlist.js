@@ -16,7 +16,7 @@ import { whiteImageBase64, features_arr, sortTracks } from "../utils/PlaylistFun
 
 export default function Playlist() {
   let navigate = useNavigate();
-  const { getAudioFeatures, sortedPlaylist, setSortedPlaylist } = useAuth();
+  const { getAudioFeatures, sortedPlaylist, setSortedPlaylist, getSavedSongs } = useAuth();
   const { pathname } = useLocation();
   const [loading, setLoading] = useState(true);
   const [rows, setRows] = useState([]);
@@ -31,7 +31,7 @@ export default function Playlist() {
 
   //Checks that the playlist id is valid
   const id = pathname.split("/")[2];
-  if (!/^[A-Za-z0-9]*$/.test(id)) {
+  if (!/^[A-Za-z0-9]*$/.test(id) && id !== "liked") {
     navigate("/");
   }
 
@@ -69,9 +69,13 @@ export default function Playlist() {
     });
     additionalFeatures.forEach((feature) => {
       temp.forEach((track, index) => {
-        temp[index][feature] = data.tracks.items[index].audio_features[feature];
+        if (data.tracks.items[index].audio_features == null) return;
+        if (data.tracks.items[index].audio_features.hasOwnProperty(feature)) {
+          temp[index][feature] = data.tracks.items[index].audio_features[feature];
+        }
       });
     });
+
     setRows(temp);
   };
 
@@ -95,14 +99,12 @@ export default function Playlist() {
 
   useEffect(() => {
     if (sortedPlaylist) {
-      console.log("Columns updated");
       processTracks(sortedPlaylist);
     }
   }, [columns]);
 
   useEffect(() => {
     if (sortedPlaylist) {
-      console.log("Features updated");
       sortTracks(sortedPlaylist, setSortedPlaylist, sortedPlaylist, processTracks, columns, features);
     }
   }, [features]);
