@@ -17,17 +17,12 @@ const firebaseConfig = {
   messagingSenderId: "47963575225",
   appId: "1:47963575225:web:2c55b00da86743527d1c68",
 };
-
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 // Create an instance of the OAuth provider
 const provider = new OAuthProvider("oidc.spotify");
-// provider.addScope("user-read-email"); // For example, request the user's email
-const credential = provider.credential({
-  idToken: getToken("token"),
-});
 
 const FirebaseContext = createContext();
 
@@ -38,33 +33,31 @@ export function useAuth() {
 export function FirebaseProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
   const [loading, setLoading] = useState(true);
-  const [spotifyToken, setSpotifyToken] = useState(getToken("token"));
 
   useEffect(() => {
-    signInWithCredential(getAuth(), credential)
-      .then((result) => {
-        // User is signed in.
-        // IdP data available in result.additionalUserInfo.profile.
-        console.log(result);
-
-        // Get the OAuth access token and ID Token
-        const credential = OAuthProvider.credentialFromResult(result);
-        const accessToken = credential.accessToken;
-        const idToken = credential.idToken;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
-
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      console.log("user", user);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
       setLoading(false);
     });
-
     return unsubscribe;
+  }, []);
+
+  useEffect(() => {
+    if (getToken("token")) {
+      const credential = provider.credential({
+        idToken: getToken("token"),
+      });
+      signInWithCredential(auth, credential)
+        .then((result) => {
+          // Get the OAuth access token and ID Token
+          const credential = OAuthProvider.credentialFromResult(result);
+          const accessToken = credential.accessToken;
+          const idToken = credential.idToken;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   }, []);
 
   const value = {

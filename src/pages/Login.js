@@ -2,48 +2,44 @@ import React, { useEffect, useState } from "react";
 import { getSpotifyAuthorizeUrl } from "../utils/pkce"; // You should implement these functions
 import { getToken } from "../management/browserStorage";
 import "./Login.css";
+import { getAuth, signInWithRedirect, OAuthProvider } from "firebase/auth";
+import { initializeApp } from "firebase/app";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDaSNO3lpnP-SiV7wrGFSejccUZMrWhetE",
+  authDomain: "tenny-spotify-app.firebaseapp.com",
+  projectId: "tenny-spotify-app",
+  storageBucket: "tenny-spotify-app.appspot.com",
+  messagingSenderId: "47963575225",
+  appId: "1:47963575225:web:2c55b00da86743527d1c68",
+};
+
+const app = initializeApp(firebaseConfig);
 
 const Login = () => {
+  const auth = getAuth(app);
+  const provider = new OAuthProvider("oidc.spotify");
+
+  // Redirect to Spotify for authentication
+  const signInWithSpotify = () => {
+    signInWithRedirect(auth, provider);
+  };
+
+  // Check if user is redirected back from Spotify
   useEffect(() => {
-    // if we have a token then go to home
-    if (getToken() !== null) {
-      window.location.href = "/";
-    }
-  }, []);
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        // User is signed in!
+        console.log("User signed in:", user);
+      } else {
+        console.log("No user signed in");
+      }
+    });
+  }, [auth]);
 
   return (
-    <div
-      style={{
-        height: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        background: "linear-gradient(120deg, #380036, #0CBABA)",
-        backgroundSize: "200% 200%",
-        animation: "gradient 15s ease infinite",
-      }}>
-      <h1 style={{ fontSize: "2.5em", color: "#fff" }}>Login</h1>
-      <p style={{ color: "#fff", textAlign: "center", maxWidth: "60%" }}>
-        This app allows Spotify users to order their playlists in a new interesting way
-      </p>
-      <button
-        onClick={async () => {
-          const url = await getSpotifyAuthorizeUrl();
-          window.location.href = url;
-        }}
-        style={{
-          marginTop: "2em",
-          padding: "1em 2em",
-          fontSize: "1em",
-          color: "#fff",
-          border: "none",
-          borderRadius: "5px",
-          background: "#44B09E",
-          cursor: "pointer",
-        }}>
-        Get Started
-      </button>
+    <div>
+      <button onClick={signInWithSpotify}>Sign in with Spotify</button>
     </div>
   );
 };
