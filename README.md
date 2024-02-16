@@ -1,3 +1,5 @@
+[Link to site](https://spotefye.web.app) Sadly not approved by Spotify so not able to be used without your email being added to a list
+
 TODO:
 
 - event listener for nowplaying instead of polling every 10 seconds
