@@ -1,3 +1,5 @@
+Showcase video - [https://youtu.be/WBsgVBUNkOw](https://youtu.be/WBsgVBUNkOw)
+
 [Link to site](https://spotefye.web.app) Sadly not approved by Spotify so not able to be used without your email being added to a list
 
 TODO:
