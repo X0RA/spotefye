@@ -396,16 +396,16 @@ export function AuthProvider({ children }) {
           Authorization: `Bearer ${token}`,
         },
       });
-      // while (data.next != null) {
-      //   const { data: data2 } = await axios.get(data.next, {
-      //     headers: {
-      //       Authorization: `Bearer ${token}`,
-      //     },
-      //   });
-      //   data.items = data.items.concat(data2.items);
-      //   data.next = data2.next;
-      // }
-      // setKey(setLikedSongs, data, { ttl: 30, timeframe: "minutes" });
+      while (data.next != null) {
+        const { data: data2 } = await axios.get(data.next, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        data.items = data.items.concat(data2.items);
+        data.next = data2.next;
+      }
+      setKey(setLikedSongs, data, { ttl: 30, timeframe: "minutes" });
       return data.items;
     } else {
       return saved_data;
@@ -425,15 +425,15 @@ export function AuthProvider({ children }) {
           Authorization: `Bearer ${token}`,
         },
       });
-      // while (data.next != null) {
-      //   const { data: data2 } = await axios.get(data.next, {
-      //     headers: {
-      //       Authorization: `Bearer ${token}`,
-      //     },
-      //   });
-      //   data.items = data.items.concat(data2.items);
-      //   data.next = data2.next;
-      // }
+      while (data.next != null) {
+        const { data: data2 } = await axios.get(data.next, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        data.items = data.items.concat(data2.items);
+        data.next = data2.next;
+      }
       console.log(data);
       // setKey(setLikedSongs, data, { ttl: 30, timeframe: "minutes" });
       return data;
